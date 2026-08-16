@@ -1,0 +1,40 @@
+# Secrets and credentials - never commit
+secrets.yaml
+known_devices.yaml
+ip_bans.yaml
+
+# HA internal state (auth tokens, user accounts, device registry)
+.storage/
+.cloud/
+
+# Databases and logs
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.fault
+OZW_Log.txt
+pyozw.sqlite
+
+# HA runtime files
+.HA_VERSION
+.ha_run.lock
+
+# Python deps / cache
+deps/
+__pycache__/
+*.pyc
+
+# Text-to-speech cache
+tts/
+
+# HTTP auth / session
+.google.token
+shopping_list.json
+
+# Hidden cache dirs
+.cache/
+
+# macOS
+.DS_Store
+._*
