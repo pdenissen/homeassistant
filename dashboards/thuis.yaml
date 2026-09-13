@@ -1,0 +1,507 @@
+title: Thuis
+views:
+  - title: Thuis
+    path: home
+    icon: mdi:home-variant
+    type: sections
+    max_columns: 2
+    dense_section_placement: true
+    header:
+      layout: responsive
+      badges_position: bottom
+      card:
+        type: markdown
+        content: |
+          {% set h = now().hour %}
+          {% if h < 6 %}# Goedenacht
+          {% elif h < 12 %}# Goedemorgen
+          {% elif h < 18 %}# Goedemiddag
+          {% else %}# Goedenavond
+          {% endif %}
+          {{ state_attr('weather.forecast_home', 'temperature') | round(0, 'common') }}° · {{ states('weather.forecast_home') | replace('-', ' ') | title }}
+    badges:
+      - type: entity
+        entity: person.pierre_denissen
+        show_name: true
+      - type: entity
+        entity: weather.forecast_home
+        show_name: false
+      - type: entity
+        entity: sun.sun
+        show_name: false
+      - type: entity
+        entity: todo.shopping_list
+        show_name: true
+    sections:
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Weer
+            heading_style: title
+            icon: mdi:weather-partly-cloudy
+          - type: weather-forecast
+            entity: weather.forecast_home
+            forecast_type: daily
+            show_current: true
+            show_forecast: true
+            grid_options:
+              columns: 12
+              rows: 5
+
+      - type: grid
+        column_span: 2
+        visibility:
+          - condition: numeric_state
+            entity: sensor.office_pierre_hue_dimmer_switch_1_battery
+            below: 20
+        cards:
+          - type: heading
+            heading: Aandacht
+            heading_style: title
+            icon: mdi:battery-alert
+          - type: tile
+            entity: sensor.office_pierre_hue_dimmer_switch_1_battery
+            name: Office dimmer batterij
+            color: red
+            grid_options:
+              columns: 6
+              rows: 1
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Woonkamer
+            heading_style: title
+            icon: mdi:sofa-outline
+            badges:
+              - type: entity
+                entity: light.woonkamer_woonkamer
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.woonkamer_woonkamer
+            name: Alle lampen
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: light.living
+            name: Living
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: light.woonkamer_lightstrip_tv
+            name: TV-strip
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: light.woonkamer_lightstrip_kast
+            name: Kast-strip
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: heading
+            heading: Sfeer
+            heading_style: subtitle
+            icon: mdi:palette-outline
+          - type: tile
+            entity: scene.woonkamer_woonkamer_relax
+            name: Relax
+            icon: mdi:weather-sunset
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.woonkamer_woonkamer_gezelligheid
+            name: Gezellig
+            icon: mdi:fireplace
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.living_tv_mode
+            name: TV
+            icon: mdi:television
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.woonkamer_woonkamer_warm_lights
+            name: Warm
+            icon: mdi:lightbulb-night
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Keuken
+            heading_style: title
+            icon: mdi:stove
+            badges:
+              - type: entity
+                entity: light.kitchen_kitchen
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.kitchen_kitchen
+            name: Alle spots
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: scene.kitchen_kitchen_normaal_licht
+            name: Normaal
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.kitchen_kitchen_dimmed
+            name: Gedimd
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.kitchen_kitchen_relax
+            name: Relax
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.kitchen_kitchen_nightlight
+            name: Nacht
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+
+          - type: heading
+            heading: Eettafel
+            heading_style: title
+            icon: mdi:table-furniture
+            badges:
+              - type: entity
+                entity: light.eettafel_eettafel
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.eettafel_eettafel
+            name: Eettafel
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: scene.eettafel_eettafel_bright
+            name: Fel
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+          - type: tile
+            entity: scene.eettafel_eettafel_relax
+            name: Relax
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+          - type: tile
+            entity: scene.eettafel_eettafel_dimmed
+            name: Gedimd
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Office Pierre
+            heading_style: title
+            icon: mdi:desk
+            badges:
+              - type: entity
+                entity: light.office_pierre_office_pierre
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.office_pierre_office_pierre
+            name: Office
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: light.office_pierre_monitor_strip
+            name: Monitorstrip
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: scene.office_pierre_office_pierre_concentrate
+            name: Focus
+            icon: mdi:head-lightbulb-outline
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.office_pierre_office_pierre_relax
+            name: Relax
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.office_pierre_office_pierre_honolulu
+            name: Honolulu
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: scene.office_pierre_office_pierre_nightlight
+            name: Nacht
+            hide_state: true
+            grid_options:
+              columns: 6
+              rows: 1
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Slaapkamer
+            heading_style: title
+            icon: mdi:bed
+          - type: tile
+            entity: light.yeelight_color_0x12bfa768
+            name: Lamp 1
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: light.yeelight_color_0x12bfc449
+            name: Lamp 2
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+
+          - type: heading
+            heading: Badkamer
+            heading_style: title
+            icon: mdi:shower
+            badges:
+              - type: entity
+                entity: light.badkamer_badkamer
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.badkamer_badkamer
+            name: Spots
+            features:
+              - type: light-brightness
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: tile
+            entity: scene.badkamer_badkamer_relax
+            name: Relax
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+          - type: tile
+            entity: scene.badkamer_badkamer_nightlight
+            name: Nacht
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+          - type: tile
+            entity: scene.badkamer_badkamer_sleepy
+            name: Sleepy
+            hide_state: true
+            grid_options:
+              columns: 4
+              rows: 1
+
+      - type: grid
+        column_span: 2
+        cards:
+          - type: heading
+            heading: Media
+            heading_style: title
+            icon: mdi:music
+          - type: media-control
+            entity: media_player.everywhere_music
+            grid_options:
+              columns: 12
+              rows: 3
+          - type: tile
+            entity: media_player.samsung_the_frame
+            name: The Frame
+            features:
+              - type: media-player-playback
+            grid_options:
+              columns: 6
+              rows: 2
+          - type: tile
+            entity: media_player.rx_v675_a3730b
+            name: Receiver
+            features:
+              - type: media-player-playback
+            grid_options:
+              columns: 6
+              rows: 2
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Balkon
+            heading_style: title
+            icon: mdi:balcony
+            badges:
+              - type: entity
+                entity: light.balcony_balcony
+                tap_action:
+                  action: toggle
+          - type: tile
+            entity: light.balcony_balcony
+            name: Verlichting
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: light.balcony_on_off_plug_1
+            name: Stekker
+            grid_options:
+              columns: 6
+              rows: 1
+          - type: tile
+            entity: switch.hue_bridge_automation_balkon_verlichting
+            name: Auto aan/uit
+            grid_options:
+              columns: 12
+              rows: 1
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: TV
+            heading_style: title
+            icon: mdi:television
+          - type: tile
+            entity: light.tv_tv
+            name: TV-zone
+            grid_options:
+              columns: 12
+              rows: 1
+          - type: tile
+            entity: scene.living_tv_mode
+            name: TV-modus
+            icon: mdi:television-classic
+            hide_state: true
+            grid_options:
+              columns: 12
+              rows: 1
+
+  - title: Kamers
+    path: kamers
+    icon: mdi:floor-plan
+    type: sections
+    max_columns: 3
+    dense_section_placement: true
+    sections:
+      - type: grid
+        cards:
+          - type: heading
+            heading: Kamers
+            heading_style: title
+            icon: mdi:home-outline
+          - type: area
+            area: woonkamer
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: kitchen
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: eettafel
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: office_pierre
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: bedroom
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: badkamer
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: balcony
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
+          - type: area
+            area: tv
+            display_type: compact
+            features:
+              - type: area-controls
+            grid_options:
+              columns: 12
+              rows: 2
